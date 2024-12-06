@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style/psicologo.css">
+    <link rel="icon" href="img/icone.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert2.js"></script>
+    <title>PapoCabeça</title>
+</head>
+<body>
+    <h1>Papo<span>Cabeça</span></h1>
+    <h2>Registro de Psicólogo</h2>
+
+    <div class="duvida">
+        <a href="sobre_psico.html">Como funciona o registro do psicólogo?</a>
+    </div>
+
+    <div class="container">
+        <form id="registroPsicologoForm" method="post">
+            <div class="left">
+                <label for="nome_psicologo">Nome Completo</label>
+                <input type="text" name="nome_psicologo" id="nome_psicologo" required>
+
+                <label for="cpf_psicologo">CPF</label>
+                <input type="text" name="cpf_psicologo" maxlength="14" id="cpf_psicologo" required>
+
+                <label for="disponibilidade">Disponibilidade para consulta</label>
+                <textarea id="disponibilidade" name="disponibilidade" required></textarea>
+            </div>
+
+            <div class="right">
+                <label for="especialidade">Especialidade</label>
+                <input type="text" name="especialidade" id="especialidade" required>
+
+                <label for="crp">Número de CRP</label>
+                <input type="text" name="crp" minlength="7" maxlength="7" id="crp" required>
+
+                <label for="contato">Email</label>
+                <input type="text" name="contato" id="contato" required>
+
+                <label for="descricao">Descrição sobre você</label>
+                <textarea id="descricao" name="descricao" required></textarea>
+            </div>
+
+            <button type="submit">Registrar Psicólogo</button>
+        </form>
+    </div>
+
+    <div class="link-voltar">
+        <a href="auth.html">Voltar</a>
+    </div>
+
+    <script>
+        // Função para validar CPF
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, ""); // Remove caracteres não numéricos
+            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+            let soma = 0;
+            let resto;
+            // Valida primeiro dígito verificador
+            for (let i = 1; i <= 9; i++) {
+                soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            }
+            resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.substring(9, 10))) return false;
+            // Valida segundo dígito verificador
+            soma = 0;
+            for (let i = 1; i <= 10; i++) {
+                soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            }
+            resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.substring(10, 11))) return false;
+            return true;
+        }
+
+        // Função para validar CRP
+        function validarCRP(crp) {
+            crp = crp.replace(/[^\d]+/g, ""); // Remove caracteres não numéricos
+            if (crp.length !== 7) return false; // Verifica se tem 7 dígitos
+            const region = parseInt(crp.substring(0, 2), 10);
+            const number = parseInt(crp.substring(2), 10);
+            // Validação de faixa de valores típicos (exemplo)
+            if (region < 1 || region > 24 || number < 1 || number > 99999) {
+                return false;
+            }
+            return true;
+        }
+
+        // Adiciona evento de validação ao formulário
+        document.getElementById('registroPsicologoForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio normal do formulário
+
+            const cpfInput = document.getElementById('cpf_psicologo').value;
+            const crpInput = document.getElementById('crp').value;
+            
+            // Valida CPF
+            if (!validarCPF(cpfInput)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'CPF inválido! Por favor, insira um CPF válido.',
+                });
+                return; // Não envia o formulário se o CPF for inválido
+            }
+
+            // Valida CRP
+            if (!validarCRP(crpInput)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'CRP inválido! Por favor, insira um CRP válido.',
+                });
+                return; // Não envia o formulário se o CRP for inválido
+            }
+
+            // Se o CPF e o CRP forem válidos, envia os dados do formulário
+            const formData = new FormData(this);
+            fetch('process/psicologo.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())  // Espera que o PHP retorne um JSON
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Psicólogo registrado com sucesso!',
+                        text: data.message,
+                    }).then(() => {
+                        window.location.reload();  // Opcional: Recarrega a página ou redireciona
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro de conexão!',
+                    text: 'Não foi possível conectar ao servidor.',
+                });
+            });
+        });
+    </script>
+</body>
+</html>

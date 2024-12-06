@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style/auth.css">
+    <link rel="stylesheet" href="style/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert2.js"></script>
+    <link rel="icon" href="img/icone.ico" type="image/x-icon">
+    <title>PapoCabeça</title>
+</head>
+<body>
+    <div id="loading" style="display: none;">Loading&#8330</div>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form method="POST" id="registrar">
+                <h1>Criar nova conta</h1>
+                <input type="text" name="username" minlength="5" maxlength="15" required placeholder="Usuário"/>
+                <input type="email" name="email" required placeholder="E-mail" />
+                <input type="password" name="password" minlength="8" required placeholder="Senha" />
+                <input type="password" name="repPassword" minlength="8" required placeholder="Repita a senha" />
+                <button type="submit">Criar</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form method="POST" id="logar">
+                <h1>Entrar</h1>
+                <input type="text" name="email" class="field" required placeholder="E-mail ou Usuário" />
+                <input type="password" name="password" class="field" required placeholder="Senha" />
+                <a href="#">Esqueceu sua senha? </a>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <img src="img/pc-img.png" alt="logo papo cabeça">
+                    <h1>Já tem conta?</h1>
+                    <p>Entre aqui com sua conta</p>
+                    <button class="hidden" id="login">Entrar</button>
+                </div>
+                <div class="toggle-panel toggle-right right">
+                    <img src="img/pc-img.png" alt="logo papo cabeça">
+                    <h1>Seja Bem-vindo!!</h1>   
+                    <p>Cria sua conta aqui caso não tenha uma</p>
+                    <button class="hidden" id="register">Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-psico">
+        <button><a href="auth-psico.html">Psicólogo? Faça seu registro por aqui. </a></button>
+    </div>
+
+    <script src="js/script.js"></script>
+
+    <script>
+        // Função para exibir alertas de erro
+        function showError(title, text) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'error',
+                confirmButtonText: 'Tentar novamente'
+            });
+        }
+
+        // Submissão de formulário para login
+        $('#logar').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: 'process/login.php',
+                data: $(this).serialize(),
+                beforeSend: function () {
+                    $('#loading').show();
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                success: function (data) {
+                    const response = JSON.parse(data);
+                    if (response.redirect) {
+                        location.href = response.redirect;
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                    showError('Oops!', 'Erro ao fazer login. Por favor, tente novamente.');
+                }
+            });
+        });
+        
+        // Submissão de formulário para registro
+        $('#registrar').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: 'process/registration.php',
+                data: $(this).serialize(),
+                beforeSend: function () {
+                    $('#loading').show();
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+                success: function (data) {
+                    location.href = "./";
+                },
+                error: function (error) {
+                    console.error(error);
+                    showError('Ocorreu algum erro!!', 'Erro ao criar conta. Por favor, tente novamente.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

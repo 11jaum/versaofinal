@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas Aceitas</title>
+    <link rel="stylesheet" href="style/consultas.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Suas Consultas Aceitas</h1>
+        <table id="acceptedConsultasTable" border="1" cellspacing="0" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Observações</th>
+                    <th>Contato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- As consultas serão carregadas aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function fetchAcceptedConsultas() {
+            // Remove qualquer filtro de usuário e busca todas as consultas aceitas
+            fetch(`process/accepted_consultas.php`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#acceptedConsultasTable tbody');
+                    tableBody.innerHTML = ''; // Limpa a tabela antes de preencher
+    
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+    
+                    if (data.message) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td colspan="5">${data.message}</td>`;
+                        tableBody.appendChild(row);
+                        return;
+                    }
+    
+                    // Popula a tabela com as consultas aceitas
+                    data.forEach(consulta => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${consulta.nome}</td>
+                            <td>${new Date(consulta.data_consulta).toLocaleDateString('pt-BR')}</td>
+                            <td>${consulta.hora.slice(0, 5)}</td>
+                            <td>${consulta.descricao}</td>
+                            <td>${consulta.contato || 'Sem contato'}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    alert('Erro ao carregar consultas aceitas.');
+                    console.error('Erro ao carregar consultas:', error);
+                });
+        }
+    
+        // Carrega as consultas aceitas ao carregar a página
+        fetchAcceptedConsultas();
+    </script>
+    
+
+    <div class="link-voltar">
+        <a href="index.html">Volte para a tela inicial...</a>
+    </div>
+</body>
+</html>

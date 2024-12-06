@@ -1,0 +1,96 @@
+@import "global.css";
+
+label, button, textarea {
+    margin: 0 30px;
+}
+
+.container {
+    padding: 0px 30px 40px;
+}
+
+.branco {
+    padding: 20px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    margin: 10px 10px;
+}
+
+.nav a {
+    text-decoration: none;
+    font-size: 17px;
+    color: white;
+    background-color: var(--cor-prin);
+    margin: 0 10px;
+    padding: 15px;
+    border-radius: 25px;
+    transition: font-size 0.3s ease;
+}
+
+
+.right {
+    display: flex;
+    margin-left: auto;
+}
+
+button {
+    border: none;
+    font-size: 13   px;
+    color: white;
+    background-color: var(--cor-prin);
+    outline: none;
+    padding: 20px 50px;
+    border-radius: 20px;
+}
+
+fieldset {
+    margin: 0 25px;
+    border-radius: 15px;
+    padding-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+label {
+    padding-bottom: 10px;
+    font-size: 18px;
+}
+
+textarea {
+    width: 60%;
+    height: 100px; 
+    padding: 10px;
+    resize: vertical; 
+    box-sizing: border-box; 
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.397);
+}
+
+input {
+    border: 1px solid rgba(0, 0, 0, 0.384);
+    border-radius: 5px;
+    margin: 0 30px 20px;
+    padding: 5px;
+}
+
+input:focus, textarea:focus {
+    border: 1px solid rgba(0, 0, 0, 0.39);
+    outline: none;
+}
+
+.link-voltar a {
+    color: black;
+    text-align: center;
+}
+
+.link-voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 60px 0 60px;
+    text-align: center;
+}
+

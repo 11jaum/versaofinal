@@ -1,0 +1,60 @@
+@import "global.css";
+
+h1 {
+    font-size: 3.6rem;
+    text-align: center;
+    margin: 50px 0 0;
+}
+
+span {
+    margin-left: 10px;
+    color: var(--cor-prin); 
+    text-shadow: 2px 2px 4px rgba(37, 124, 255, 0.5);
+}
+
+h2 {
+    margin: 0 34px 85px;
+    text-align: center;
+}
+
+.blocos-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+}
+
+.bloco {
+    width: 22%;
+    text-align: center;
+    background-color: #f5f5f5;
+    height: 500px;
+    padding-top: 50px;
+    border-radius: 18px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bloco:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px #f5f5f5; 
+}
+
+.bloco img {
+    width: 200px;
+}
+
+.bloco a {
+    text-decoration: none;
+    color: black;
+}
+
+#click-me {
+    font-size: 10px;
+    margin-top: 5px;
+    color: rgba(0, 0, 0, 0.384);
+}
+

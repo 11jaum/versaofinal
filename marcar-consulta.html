@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style/marcar-consulta.css">
+    <link rel="icon" href="img/icone.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert2.js"></script>
+    <title>PapoCabeça</title>
+</head>
+<body>
+
+    <h1>Papo<span>Cabeça</span></h1>
+
+    <h2> Marque sua consulta </h2>
+    
+    <div class="container">
+        <form id="consultaForm" method="post">
+            <div class="left">
+                <label for="username_consulta">Nome de usuário</label>
+                <input type="text" name="username_consulta" id="usernametext" required>
+    
+                <label for="name_consulta">Seu nome</label>
+                <input type="text" name="name_consulta" id="nametext" required>
+    
+                <label for="email">Seu email</label>
+                <input type="email" name="email" id="email" required>
+    
+                <label for="date">Data que deseja a consulta</label>
+                <input type="date" name="date" id="date" required>
+            </div>
+    
+            <div class="right">
+                <label for="time">Horário que deseja</label>
+                <input type="time" name="time" id="time" required>
+    
+                <label for="text">Observações extras</label>
+                <textarea id="message" name="text"></textarea>
+    
+                <label for="contato">Contato extra (opcional)</label>
+                <input type="text" name="contato" id="contato">
+            </div>
+    
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <div class="link-voltar">
+        <a href="index.html">Volte para a tela inicial...</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('date');
+            const timeInput = document.getElementById('time');
+            const today = new Date();
+    
+            // Formata a data mínima como o dia seguinte
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowFormatted = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+            dateInput.setAttribute('min', tomorrowFormatted);
+    
+            document.getElementById('consultaForm').addEventListener('submit', function (event) {
+                event.preventDefault(); // Impede o envio do formulário
+    
+                const selectedDate = new Date(dateInput.value);
+                const selectedTime = timeInput.value;
+    
+                // Verifica se a data é válida
+                if (selectedDate < tomorrow) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Data inválida!',
+                        text: 'A data deve ser, no mínimo, a partir de amanhã.',
+                    });
+                    return;
+                }
+    
+                // Valida o horário para o dia atual
+                if (selectedDate.toDateString() === today.toDateString()) {
+                    if (selectedTime) {
+                        const [hours, minutes] = selectedTime.split(':').map(Number);
+                        const selectedDateTime = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), hours, minutes);
+    
+                        const minimumTime = new Date(today.getTime() + 4 * 60 * 60 * 1000); // Adiciona 4 horas ao horário atual
+                        if (selectedDateTime < minimumTime) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Horário inválido!',
+                                text: 'O horário selecionado deve ser pelo menos 4 horas após o horário atual.',
+                            });
+                            return;
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Horário inválido!',
+                            text: 'Você deve selecionar um horário válido.',
+                        });
+                        return;
+                    }
+                }
+    
+                // Envia o formulário via AJAX
+                const formData = new FormData(this);
+    
+                fetch('process/consult.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json()) // Espera que o PHP retorne um JSON
+                .then(data => {
+                    if (data.status === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Consulta enviada!',
+                            text: data.message,
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro!',
+                            text: data.message,
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro de conexão!',
+                        text: 'Não foi possível conectar ao servidor.',
+                    });
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

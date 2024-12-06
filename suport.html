@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/support.css">
+    <link rel="icon" href="img/icone.ico" type="image/x-icon">  
+    <title>PapoCabeça</title>
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert2.js"></script>
+</head>
+<body>
+    <h1>Formulário de Suporte</h1>
+    
+    <h2>Papo<span>Cabeça</span></h2>
+    <div class="flex">
+        <form id="supportForm" method="POST">
+            <label for="name">Nome:</label> <br>
+            <input type="text" name="name" required><br>
+            
+            <label for="email">E-mail:</label>  <br>
+            <input type="email" name="email" required><br>
+            
+            <label for="subject">Assunto:</label>  <br>
+            <input type="text" name="subject" required><br>
+            
+            <label for="message">Mensagem:</label>  <br>
+            <textarea rows="5" cols="40" name="message" required></textarea><br>
+            
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <div class="link-voltar">
+        <a href="index.html">Volte para a tela inicial...</a>
+    </div>
+   
+
+    <script>
+        // Submeter o formulário via AJAX
+        document.getElementById('supportForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio normal do formulário
+    
+            const formData = new FormData(this);
+    
+            fetch('process/support.php', {  // Altere o caminho conforme necessário
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mensagem enviada!',
+                        text: data.message,
+                    }).then(() => {
+                        // Limpar os campos do formulário após o sucesso
+                        document.getElementById('supportForm').reset();  // Limpa todos os campos do formulário
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro de conexão!',
+                    text: 'Não foi possível conectar ao servidor.',
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

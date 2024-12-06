@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style/auth.css">
+    <link rel="stylesheet" href="style/sweetalert2.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert2.js"></script>
+    <title>Registro Psicólogo</title>
+</head>
+<body>
+    <form method="POST" id="registrarPsico">
+        <h1>Registrar Psicólogo</h1>
+        <input type="text" name="username" minlength="5" maxlength="15" required placeholder="Usuário (comece com 'Psi')"/>
+        <input type="email" name="email" required placeholder="E-mail"/>
+        <input type="password" name="password" minlength="8"  required placeholder="Senha"/>
+        <input type="password" name="repPassword" minlength="8" required placeholder="Repita a senha"/>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <script>
+        $('#registrarPsico').on('submit', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: 'process/register-psico.php',
+                data: $(this).serialize(),
+                success: function () {
+                    Swal.fire({
+                        title: 'Registro realizado com sucesso!',
+                        text: 'Você já pode fazer login.',
+                        icon: 'success',
+                        confirmButtonText: 'Entendido'
+                    });
+                },
+                error: function (error) {
+                    console.error(error);
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Houve um problema no registro. Por favor, tente novamente.',
+                        icon: 'error',
+                        confirmButtonText: 'Tentar novamente'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

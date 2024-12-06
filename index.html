@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style/telainicial.css">
+    <link rel="stylesheet" href="style/sweetalert2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert2.js"></script>
+    <script src="js/menu-mobile.js"></script>
+    <script src="js/slide.js"></script>
+    <link rel="stylesheet" href="style/config.css">
+    <script src="theme.js" defer></script>
+    <link rel="icon" href="img/icone.ico" type="image/x-icon">  
+    <title>PapoCabeça</title>
+</head>
+<body>
+    <div class="titulo">
+        <h1><span>Bem vindo ao Papo</span><span>Cabeça.</span></h1>
+            <button><a href="planos.html">Assinaturas</a></button>
+     </div>
+
+    <div class="sessao">
+        <div class="lado-esquerdo"> 
+        <h1><p>“A terapia que você precisa,</p><p> a um clique de distância.”</p></h1>
+        <a href="marcar-consulta.html">Marque sua consulta</a>
+        <a href="inicial.html">Saiba mais sobre</a>
+        </div>
+        <img src="img/chatsemfundo.png" alt="">
+    </div>
+
+
+    <div class="seta">
+        <button id="seta"><img src="img/seta-baixo.png" alt=""></button>
+    </div>
+    
+    <div class="vazio"></div>
+
+    <div class="blocos-container" id="blocos-container">
+        <div class="bloco" id="bloco-um" >
+            <img src="img/chatdenovo.png" alt="">
+            <a href="conversas.html">
+                <h2>Conversas</h2>
+                <p>Acesse suas conversas</p>
+                <p id="click-me">Clique aqui</p>
+            </a>
+        </div>
+        <div class="bloco" id="bloco-um" >
+            <img src="img/agenda.png" alt="">
+            <a href="agenda.html">
+                <h2>Agenda</h2>
+                <p>Acesse sua agenda</p>
+                <p id="click-me">Clique aqui</p>
+            </a>
+        </div>
+        <div class="bloco" id="bloco-um" >
+            <img src="img/calendario.png" alt="">
+            <a href="marcar-consulta.html">
+                <h2>Marcar Consulta</h2>
+                <p>Marque sua consulta</p>
+                <p id="click-me">Clique aqui</p>
+            </a>
+        </div>
+        <div class="bloco" id="bloco-um" >
+            <img src="img/suport.png" alt="">
+            <a href="suport.html">
+                <h2>Suporte</h2>
+                <p>Obtenha ajuda</p>
+                <p id="click-me">Clique aqui</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="vazio"></div>
+
+    
+
+    <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>Sobre Nós</h4>
+            <p>Informações sobre a empresa ou o site.</p>
+          </div>
+          <div class="footer-section">
+            <h4>Links Úteis</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Serviços</a></li>
+              <li><a href="#">Contato</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Redes Sociais</h4>
+            <div class="social">
+                  </a>
+                  <a href="#" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                  <a href="#" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 PapoCabeça. Todos os direitos reservados.</p>
+        </div>
+      </footer>
+
+    <script>
+        document.getElementById("seta").onclick = function() {
+            document.getElementById("blocos-container").scrollIntoView({
+                behavior: 'smooth'
+            });
+        };
+    </script>
+
+
+  <script>
+      document.getElementById('myButton').addEventListener('click', function() {
+          window.location.href = 'configuracoes.html';  // Redireciona para a página desejada
+      });
+  </script>
+
+  
+</body>
+</html> 

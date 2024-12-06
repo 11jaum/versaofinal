@@ -1,0 +1,78 @@
+@import "global.css";
+
+h1 {
+    font-size: 3.6rem;
+    margin: 10px 0 30px;
+    text-align: center;
+}
+
+span {
+    color: var(--cor-prin);
+    text-shadow: 2px 2px 4px rgba(37, 124, 255, 0.5);
+}
+
+* {
+    text-align: justify;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p, ol, ul {
+    font-size: 1.5rem;
+    color: #333;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+ol {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 1% 7%;
+}
+
+.link-voltar {
+    margin: 60px 0 40px;
+}
+
+.link-voltar a {
+    color: #3877ff;
+    font-weight: bold;
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    font-size: 1.3rem;
+}
+
+.link-voltar a:hover {
+    text-decoration: underline;
+}
+
+h3 {
+    font-size: 1.4rem;
+    color: #555;
+    margin-top: 20px;
+}
+
+ul {
+    text-align: left;
+    margin-left: 20px;
+}
+
+ol, ul {
+    margin: 0;
+}
+
+ol li, ul li {
+    margin-bottom: 10px;
+}

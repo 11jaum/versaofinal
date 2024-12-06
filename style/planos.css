@@ -1,0 +1,161 @@
+@import "global.css";
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+}
+
+span {
+    color: var(--cor-prin); 
+    text-shadow: 2px 2px 4px rgba(37, 124, 255, 0.5);
+}
+
+.tittle {
+    padding: 20px 0 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.tittle img {
+    width: 200px;
+}
+
+.tittle h1 {
+    font-size: 3.6rem;
+    text-align: center;
+}
+
+.plano-bloco {
+    background-color: #ececec;
+    padding: 30px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 18px;
+    margin-top: 15px;
+}
+
+.plano-bloco ul {
+    text-align: justify;
+}
+
+.dois-blocos {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+
+#tamanho-free {
+    height: 224px;
+}
+
+#tamanho {
+    height: 500px;
+}
+
+.plano-bloco button a {
+    text-decoration: none;
+    color: white;
+}
+
+.plano-bloco button {
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+    background-color: #aec8ff;
+    margin-top: 15px;
+    font-size: 20px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.plano-bloco button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px #aec8ff; 
+}
+
+h2 {
+    color: var(--cor-prin);
+}
+
+s {
+    color: rgba(255, 0, 0, 0.541);
+}
+
+.plano-bloco {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h5 {
+    position: relative;
+    top: 45px;
+    opacity: 0.7;
+    color: gray;
+}
+
+#text {
+    margin: 15px 0 20px;
+    text-align: center;
+}
+
+.link-voltar a {
+    color: black;
+}
+
+.link-voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0 60px;
+}
+
+@media screen and (max-width: 767px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 2%;
+    }
+
+    .dois-blocos {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #tamanho-free {
+        margin: 2%;
+    }
+
+
+    #tamamnho-consulta {
+        margin: 2%;
+    }
+
+    .link-voltar {
+        margin-bottom: 40px;
+    }
+
+    .tittle h1 {
+        font-size: 2rem;
+    }
+
+    .tittle img {
+        width: 100px;
+    }
+
+    #text {
+        font-size: 1.3rem;
+    }
+
+    .plano-bloco ul {
+        font-size: 1rem;
+    }
+}

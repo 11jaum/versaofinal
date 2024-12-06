@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="style/consultas.css">
+    <link rel="icon" href="img/icone.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Consultas Agendadas</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Consultas Agendadas</h1>
+        <br>
+        <table id="consultasTable" border="1" cellspacing="0" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Data escolhida</th>
+                    <th>Horário escolhido</th>
+                    <th>Observações</th>
+                    <th>Extra</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os dados das consultas serão carregados aqui via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function fetchConsultas() {
+            fetch('process/consultas.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        Swal.fire('Erro', data.error, 'error');
+                        return;
+                    }
+        
+                    const tableBody = document.querySelector('#consultasTable tbody');
+                    tableBody.innerHTML = '';
+        
+                    data.forEach(consulta => {
+                        const row = document.createElement('tr');
+                        
+                        const dataFormatada = new Date(consulta.data_consulta).toLocaleDateString('pt-BR');
+                        const horaFormatada = consulta.hora.slice(0, 5);
+                        const contatoContent = consulta.contato 
+                            ? `<span>${consulta.contato}</span>` 
+                            : '<span>Sem contato disponível</span>';
+                        const emailContent = consulta.email 
+                            ? `<span>${consulta.email}</span>` 
+                            : '<span>Email não disponível</span>';
+                        
+                        row.innerHTML = `
+                            <td>${consulta.username}</td>
+                            <td>${consulta.nome}</td>
+                            <td>${emailContent}</td>
+                            <td>${dataFormatada}</td>
+                            <td>${horaFormatada}</td>
+                            <td>${consulta.descricao}</td>
+                            <td>${contatoContent}</td>
+                            <td>
+                                <button class="accept-btn" data-id="${consulta.id}">Aceitar</button>
+                                <button class="delete-btn" data-id="${consulta.id}">Recusar</button>
+                            </td>
+                        `;
+                    
+                        tableBody.appendChild(row);
+                    });
+        
+                    addDeleteEventListeners();
+                    addAcceptEventListeners();
+                })
+                .catch(() => {
+                    Swal.fire('Erro', 'Não foi possível carregar as consultas.', 'error');
+                });
+        }
+
+        function addDeleteEventListeners() {
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const consultaId = this.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Você tem certeza?',
+                        text: "Esta ação não pode ser desfeita!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim, recusar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('process/delete_consulta.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ id: consultaId }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire('Deletado!', 'A consulta foi recusada.', 'success');
+                                    fetchConsultas();
+                                } else {
+                                    Swal.fire('Erro!', 'Ocorreu um erro ao tentar recusar a consulta.', 'error');
+                                }
+                            })
+                            .catch(() => {
+                                Swal.fire('Erro!', 'Erro de conexão. Tente novamente mais tarde.', 'error');
+                            });
+                        }
+                    });
+                });
+            });
+        }
+
+        function addAcceptEventListeners() {
+            document.querySelectorAll('.accept-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const consultaId = this.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Aceitar consulta?',
+                        text: "Você está prestes a aceitar esta consulta.",
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim, aceitar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('process/accept_consulta.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ id: consultaId }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire('Aceito!', 'A consulta foi aceita com sucesso.', 'success');
+                                    fetchConsultas();
+                                } else {
+                                    Swal.fire('Erro!', 'Ocorreu um erro ao tentar aceitar a consulta.', 'error');
+                                }
+                            })
+                            .catch(() => {
+                                Swal.fire('Erro!', 'Erro de conexão. Tente novamente mais tarde.', 'error');
+                            });
+                        }
+                    });
+                });
+            });
+        }
+
+        window.onload = fetchConsultas;
+    </script>
+
+    <div class="link-voltar">
+        <a href="dashboard.html">Voltar para a página inicial</a>
+    </div>
+</body>
+</html>
